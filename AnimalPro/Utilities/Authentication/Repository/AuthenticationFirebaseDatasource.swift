@@ -85,8 +85,6 @@ final class AuthenticationFirebaseDatasource: NSObject {
     func verifyPhoneCode(verificationCode: String) async throws -> UserModel {
         let verificationID = session.getString(forKey: .authVerificationID)
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID ?? "", verificationCode: verificationCode)
-        print("verificationID: \(verificationID)")
-        print("verificationIDUserCode: \(verificationCode)")
         
         do {
             let authDataResult = try await firebaseAuth.signIn(with: credential)

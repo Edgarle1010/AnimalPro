@@ -62,6 +62,7 @@
 		B333878E296E07200096C683 /* SpinnerModifierBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878D296E07200096C683 /* SpinnerModifierBinding.swift */; };
 		B3338790296E33A90096C683 /* BannerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878F296E33A90096C683 /* BannerModifier.swift */; };
 		B3338793296E34D50096C683 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338792296E34D50096C683 /* NotificationService.swift */; };
+		B3BF3CF2296F1A2F008C003F /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BF3CF1296F1A2F008C003F /* EmailView.swift */; };
 		B3CD769C296A590E0027119E /* AnimalProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD769B296A590E0027119E /* AnimalProApp.swift */; };
 		B3CD76A0296A59100027119E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CD769F296A59100027119E /* Assets.xcassets */; };
 		B3CD76A3296A59100027119E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CD76A2296A59100027119E /* Preview Assets.xcassets */; };
@@ -97,6 +98,7 @@
 		B333878D296E07200096C683 /* SpinnerModifierBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerModifierBinding.swift; sourceTree = "<group>"; };
 		B333878F296E33A90096C683 /* BannerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerModifier.swift; sourceTree = "<group>"; };
 		B3338792296E34D50096C683 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B3BF3CF1296F1A2F008C003F /* EmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		B3CD7698296A590E0027119E /* AnimalPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimalPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3CD769B296A590E0027119E /* AnimalProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalProApp.swift; sourceTree = "<group>"; };
 		B3CD769F296A59100027119E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				B3338772296CA5290096C683 /* PhoneNumberView.swift */,
 				B3338781296D11E20096C683 /* VerificationCodeView.swift */,
 				B3338776296CBECD0096C683 /* CountryListView.swift */,
+				B3BF3CF1296F1A2F008C003F /* EmailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 				B3338759296B5B2F0096C683 /* HomeView.swift in Sources */,
 				B3E0CC72296A61AF0078C647 /* ButtonPrimaryStyle.swift in Sources */,
 				B3338779296CC2F80096C683 /* SearchBarView.swift in Sources */,
+				B3BF3CF2296F1A2F008C003F /* EmailView.swift in Sources */,
 				B3E0CC6F296A60260078C647 /* Color.swift in Sources */,
 				B333878E296E07200096C683 /* SpinnerModifierBinding.swift in Sources */,
 				B3338775296CA7B00096C683 /* CircleButtonView.swift in Sources */,
