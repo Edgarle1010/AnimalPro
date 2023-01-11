@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 protocol AuthenticationRepositoryProtocol {
     var authenticationFirebaseDatasource: AuthenticationFirebaseDatasource { get }
     
-    func loginApple() async throws
+    func handleSignInWithAppleRequest(_ request: ASAuthorizationAppleIDRequest)
+    func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) async throws
     func loginFacebook() async throws -> UserModel
     func getVerificationID(phoneNumber: String) async throws -> String
+    func verifyPhoneCode(verificationCode: String) async throws -> UserModel
     func singOut() async throws
 }
 
@@ -24,8 +27,12 @@ final class AuthenticationRepository: AuthenticationRepositoryProtocol {
         self.authenticationFirebaseDatasource = authenticationFirebaseDatasource
     }
     
-    func loginApple() async throws {
-        return try await authenticationFirebaseDatasource.loginWithApple()
+    func handleSignInWithAppleRequest(_ request: ASAuthorizationAppleIDRequest) {
+        authenticationFirebaseDatasource.handleSignInWithAppleRequest(request)
+    }
+    
+    func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) async throws {
+        try await authenticationFirebaseDatasource.handleSignInWithAppleCompletion(result)
     }
     
     func loginFacebook() async throws -> UserModel {
@@ -34,6 +41,10 @@ final class AuthenticationRepository: AuthenticationRepositoryProtocol {
     
     func getVerificationID(phoneNumber: String) async throws -> String {
         return try await authenticationFirebaseDatasource.getVerificationID(phoneNumber: phoneNumber)
+    }
+    
+    func verifyPhoneCode(verificationCode: String) async throws -> UserModel {
+        return try await authenticationFirebaseDatasource.verifyPhoneCode(verificationCode: verificationCode)
     }
     
     func singOut() async throws {

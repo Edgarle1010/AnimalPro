@@ -20,17 +20,44 @@ final class AuthenticationFirebaseDatasource: NSObject {
     fileprivate var currentNonce: String?
     fileprivate var errorMessage: String?
     
-    func loginWithApple() async throws {
+    func handleSignInWithAppleRequest(_ request: ASAuthorizationAppleIDRequest) {
+        request.requestedScopes = [.fullName, .email]
         let nonce = randomNonceString()
         currentNonce = nonce
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
         request.nonce = sha256(nonce)
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.performRequests()
+    }
+    
+    func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) async throws {
+        if case .failure(let failure) = result {
+            errorMessage = failure.localizedDescription
+        } else if case .success(let success) = result {
+            if let appleIDCredential = success.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = currentNonce else {
+                    fatalError("Invalid state: a login callback was received, but no login request was sent.")
+                }
+                guard let appleIDToken = appleIDCredential.identityToken else {
+                    print("Unable to fetch identy token.")
+                    return
+                }
+                guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                    print("Unable to serilise token string from data: \(appleIDToken.debugDescription)")
+                    return
+                }
+                
+                let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                          idToken: idTokenString,
+                                                          rawNonce: nonce)
+                Task {
+                    do {
+                        let result = try await firebaseAuth.signIn(with: credential)
+                        session.setUser(user: .init(email: result.user.email ?? ""), loggedBy: .apple)
+                        await updateDisplayName(for: result.user, with: appleIDCredential)
+                    } catch {
+                        print("Error authenticating: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
     }
     
     func loginWithFacebook() async throws -> UserModel {
@@ -51,6 +78,21 @@ final class AuthenticationFirebaseDatasource: NSObject {
             return try await phoneAuthentication.getVerificationID(phoneNumber: phoneNumber)
         } catch {
             print("error: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
+    func verifyPhoneCode(verificationCode: String) async throws -> UserModel {
+        let verificationID = session.getString(forKey: .authVerificationID)
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID ?? "", verificationCode: verificationCode)
+        print("verificationID: \(verificationID)")
+        print("verificationIDUserCode: \(verificationCode)")
+        
+        do {
+            let authDataResult = try await firebaseAuth.signIn(with: credential)
+            let email = authDataResult.user.email ?? "No email"
+            return .init(email: email)
+        } catch {
             throw error
         }
     }
@@ -125,7 +167,6 @@ final class AuthenticationFirebaseDatasource: NSObject {
         return result
     }
     
-    @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
       let inputData = Data(input.utf8)
       let hashedData = SHA256.hash(data: inputData)
@@ -135,40 +176,4 @@ final class AuthenticationFirebaseDatasource: NSObject {
 
       return hashString
     }
-}
-
-extension AuthenticationFirebaseDatasource: ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            guard let nonce = currentNonce else {
-                fatalError("Invalid state: a login callback was received, but no login request was sent.")
-            }
-            guard let appleIDToken = appleIDCredential.identityToken else {
-                print("Unable to fetch identy token.")
-                return
-            }
-            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print("Unable to serilise token string from data: \(appleIDToken.debugDescription)")
-                return
-            }
-            
-            let credential = OAuthProvider.credential(withProviderID: "apple.com",
-                                                      idToken: idTokenString,
-                                                      rawNonce: nonce)
-            Task {
-                do {
-                    let result = try await firebaseAuth.signIn(with: credential)
-                    session.setUser(user: .init(email: result.user.email ?? ""), loggedBy: .apple)
-                    await updateDisplayName(for: result.user, with: appleIDCredential)
-                } catch {
-                    print("Error authenticating: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("Sign in with Apple errored: \(error)")
-        errorMessage = error.localizedDescription
-      }
 }

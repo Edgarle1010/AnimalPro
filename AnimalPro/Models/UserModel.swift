@@ -11,7 +11,8 @@ enum LoginType: String {
     case guest = "guest"
     case facebook = "FB"
     case apple = "APL"
-    case animalPro = "animalPro"
+    case phone = "Phone"
+    case email = "Email"
 }
 
 struct UserModel {

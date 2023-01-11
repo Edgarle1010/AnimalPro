@@ -56,6 +56,12 @@
 		B333877E296D0A8B0096C683 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333877D296D0A8B0096C683 /* PreviewProvider.swift */; };
 		B3338780296D0C5C0096C683 /* PhoneAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333877F296D0C5C0096C683 /* PhoneAuthentication.swift */; };
 		B3338782296D11E20096C683 /* VerificationCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338781296D11E20096C683 /* VerificationCodeView.swift */; };
+		B3338784296DC2190096C683 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338783296DC2190096C683 /* View.swift */; };
+		B3338788296DEFE60096C683 /* OTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338787296DEFE60096C683 /* OTPViewModel.swift */; };
+		B333878B296E066B0096C683 /* ActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = B333878A296E066B0096C683 /* ActivityIndicatorView */; };
+		B333878E296E07200096C683 /* SpinnerModifierBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878D296E07200096C683 /* SpinnerModifierBinding.swift */; };
+		B3338790296E33A90096C683 /* BannerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878F296E33A90096C683 /* BannerModifier.swift */; };
+		B3338793296E34D50096C683 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338792296E34D50096C683 /* NotificationService.swift */; };
 		B3CD769C296A590E0027119E /* AnimalProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CD769B296A590E0027119E /* AnimalProApp.swift */; };
 		B3CD76A0296A59100027119E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CD769F296A59100027119E /* Assets.xcassets */; };
 		B3CD76A3296A59100027119E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CD76A2296A59100027119E /* Preview Assets.xcassets */; };
@@ -86,6 +92,11 @@
 		B333877D296D0A8B0096C683 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		B333877F296D0C5C0096C683 /* PhoneAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneAuthentication.swift; sourceTree = "<group>"; };
 		B3338781296D11E20096C683 /* VerificationCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeView.swift; sourceTree = "<group>"; };
+		B3338783296DC2190096C683 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		B3338787296DEFE60096C683 /* OTPViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewModel.swift; sourceTree = "<group>"; };
+		B333878D296E07200096C683 /* SpinnerModifierBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerModifierBinding.swift; sourceTree = "<group>"; };
+		B333878F296E33A90096C683 /* BannerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerModifier.swift; sourceTree = "<group>"; };
+		B3338792296E34D50096C683 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		B3CD7698296A590E0027119E /* AnimalPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnimalPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3CD769B296A590E0027119E /* AnimalProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalProApp.swift; sourceTree = "<group>"; };
 		B3CD769F296A59100027119E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,6 +128,7 @@
 				B3338748296A85670096C683 /* FirebaseRemoteConfigSwift in Frameworks */,
 				B333873A296A85670096C683 /* FirebaseInAppMessaging-Beta in Frameworks */,
 				B333872C296A85670096C683 /* FirebaseDatabaseSwift in Frameworks */,
+				B333878B296E066B0096C683 /* ActivityIndicatorView in Frameworks */,
 				B3338736296A85670096C683 /* FirebaseFunctions in Frameworks */,
 				B333874C296A85670096C683 /* FirebaseStorageCombine-Community in Frameworks */,
 				B3338746296A85670096C683 /* FirebaseRemoteConfig in Frameworks */,
@@ -136,12 +148,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B333870D296A79850096C683 /* UIViewRepresentable */ = {
+		B333870D296A79850096C683 /* UIViewRepresentables */ = {
 			isa = PBXGroup;
 			children = (
 				B333870E296A79AC0096C683 /* HalfSheet.swift */,
 			);
-			path = UIViewRepresentable;
+			path = UIViewRepresentables;
 			sourceTree = "<group>";
 		};
 		B3338755296B5B040096C683 /* Home */ = {
@@ -191,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				B3338766296B79930096C683 /* AuthViewModel.swift */,
+				B3338787296DEFE60096C683 /* OTPViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -198,6 +211,7 @@
 		B333876B296B9FBA0096C683 /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				B3338791296E34C30096C683 /* ViewModels */,
 				B333876C296B9FC50096C683 /* Views */,
 			);
 			path = Root;
@@ -209,6 +223,22 @@
 				B333876D296B9FCD0096C683 /* RootView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B333878C296E06F30096C683 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				B333878D296E07200096C683 /* SpinnerModifierBinding.swift */,
+				B333878F296E33A90096C683 /* BannerModifier.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		B3338791296E34C30096C683 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B3CD768F296A590E0027119E = {
@@ -268,6 +298,7 @@
 			children = (
 				B3E0CC6E296A60260078C647 /* Color.swift */,
 				B333877A296CC34E0096C683 /* UIApplication.swift */,
+				B3338783296DC2190096C683 /* View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -275,6 +306,7 @@
 		B3E0CC67296A5D400078C647 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B3338792296E34D50096C683 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -322,7 +354,8 @@
 		B3E0CC70296A618D0078C647 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B333870D296A79850096C683 /* UIViewRepresentable */,
+				B333878C296E06F30096C683 /* ViewModifiers */,
+				B333870D296A79850096C683 /* UIViewRepresentables */,
 				B3E0CC71296A61AF0078C647 /* ButtonPrimaryStyle.swift */,
 				B3338774296CA7B00096C683 /* CircleButtonView.swift */,
 				B3338778296CC2F80096C683 /* SearchBarView.swift */,
@@ -377,6 +410,7 @@
 				B333874F296A8EBB0096C683 /* FacebookCore */,
 				B3338751296A8EBB0096C683 /* FacebookLogin */,
 				B3338753296A8EBB0096C683 /* FacebookShare */,
+				B333878A296E066B0096C683 /* ActivityIndicatorView */,
 			);
 			productName = AnimalPro;
 			productReference = B3CD7698296A590E0027119E /* AnimalPro.app */;
@@ -409,6 +443,7 @@
 			packageReferences = (
 				B3338716296A85670096C683 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				B333874E296A8EBB0096C683 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				B3338789296E066B0096C683 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
 			productRefGroup = B3CD7699296A590E0027119E /* Products */;
 			projectDirPath = "";
@@ -441,11 +476,13 @@
 				B3338763296B77570096C683 /* AuthenticationRepository.swift in Sources */,
 				B3338769296B7AD20096C683 /* SessionAppService.swift in Sources */,
 				B3338780296D0C5C0096C683 /* PhoneAuthentication.swift in Sources */,
+				B3338793296E34D50096C683 /* NotificationService.swift in Sources */,
 				B3338782296D11E20096C683 /* VerificationCodeView.swift in Sources */,
 				B3338777296CBECD0096C683 /* CountryListView.swift in Sources */,
 				B333875F296B633E0096C683 /* AuthenticationFirebaseDatasource.swift in Sources */,
 				B333876E296B9FCD0096C683 /* RootView.swift in Sources */,
 				B333875B296B61DD0096C683 /* FacebookAuthentication.swift in Sources */,
+				B3338784296DC2190096C683 /* View.swift in Sources */,
 				B3338773296CA5290096C683 /* PhoneNumberView.swift in Sources */,
 				B333877B296CC34E0096C683 /* UIApplication.swift in Sources */,
 				B333877E296D0A8B0096C683 /* PreviewProvider.swift in Sources */,
@@ -453,9 +490,12 @@
 				B3E0CC72296A61AF0078C647 /* ButtonPrimaryStyle.swift in Sources */,
 				B3338779296CC2F80096C683 /* SearchBarView.swift in Sources */,
 				B3E0CC6F296A60260078C647 /* Color.swift in Sources */,
+				B333878E296E07200096C683 /* SpinnerModifierBinding.swift in Sources */,
 				B3338775296CA7B00096C683 /* CircleButtonView.swift in Sources */,
 				B3E0CC6D296A5DE00078C647 /* WelcomeView.swift in Sources */,
 				B3338767296B79930096C683 /* AuthViewModel.swift in Sources */,
+				B3338788296DEFE60096C683 /* OTPViewModel.swift in Sources */,
+				B3338790296E33A90096C683 /* BannerModifier.swift in Sources */,
 				B333870F296A79AC0096C683 /* HalfSheet.swift in Sources */,
 				B3338761296B6BC60096C683 /* UserModel.swift in Sources */,
 				B3CD769C296A590E0027119E /* AnimalProApp.swift in Sources */,
@@ -689,6 +729,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		B3338789296E066B0096C683 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/ActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -841,6 +889,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B333874E296A8EBB0096C683 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookShare;
+		};
+		B333878A296E066B0096C683 /* ActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3338789296E066B0096C683 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
+			productName = ActivityIndicatorView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

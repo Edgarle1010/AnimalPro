@@ -19,6 +19,7 @@ protocol SessionAppServiceProtocol: ObservableObject {
     
     func set(_ value: Any, forKey: SessionAppValue)
     func setUser(user: UserModel, loggedBy: LoginType)
+    func getString(forKey: SessionAppValue) -> String?
 }
 
 final class SessionAppService: SessionAppServiceProtocol {
@@ -35,5 +36,9 @@ final class SessionAppService: SessionAppServiceProtocol {
         self.user = user
         set(true, forKey: .isLogged)
         set(loggedBy.rawValue, forKey: .loggedBy)
+    }
+    
+    func getString(forKey: SessionAppValue) -> String? {
+        return userDefaults.string(forKey: forKey.rawValue)
     }
 }

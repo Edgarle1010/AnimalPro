@@ -12,21 +12,26 @@ struct RootView: View {
     
     @AppStorage(SessionAppValue.isLogged.rawValue) private var isLogged = false
     
+    
     // MARK: - BODY
     
     var body: some View {
-        ZStack {
-            if isLogged {
-                HomeView()
-                    .navigationBarHidden(true)
-                    .transition(.slide)
-            } else {
-                WelcomeView()
-                    .navigationBarHidden(true)
-                    .transition(.slide)
+        NavigationView {
+            ZStack {
+                if isLogged {
+                    HomeView()
+                        .navigationBarHidden(true)
+                        .transition(.slide)
+                } else {
+                    WelcomeView()
+                        .navigationBarHidden(true)
+                        .transition(.slide)
+                }
             }
+            .animation(.easeInOut, value: isLogged)
         }
-        .animation(.easeInOut(duration: 0.5), value: isLogged)
+        .navigationViewStyle(.stack)
+        .banner()
     }
 }
 
@@ -35,5 +40,6 @@ struct RootView: View {
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()
+            .environmentObject(dev.notifierVM)
     }
 }

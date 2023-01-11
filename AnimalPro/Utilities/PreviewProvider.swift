@@ -21,4 +21,12 @@ class DeveloperPreview {
     private init() { }
     
     let authVM = AuthViewModel()
+    
+    @StateObject var notifierVM: NotificationService = {
+        let vm = NotificationService()
+        vm.showBanner = true
+        vm.bannerTitle = "No has dado los permisos para iniciar con Facebook"
+        vm.bannerType = .danger
+        return vm
+    }()
 }

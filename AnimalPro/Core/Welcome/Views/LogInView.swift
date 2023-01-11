@@ -10,13 +10,20 @@ import SwiftUI
 struct LogInView: View {
     // MARK: - BODY
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         VStack(spacing: 20) {
             HStack {
                 Text("Iniciar sesión")
                     .font(.title.bold())
-                    .foregroundColor(Color.white)
+                
                 Spacer()
+                
+                CircleButtonView(iconName: "xmark")
+                    .onTapGesture {
+                        dismiss()
+                    }
             }
             
             Divider()
@@ -28,7 +35,6 @@ struct LogInView: View {
             guestButton()
             Spacer()
         } //:VSTACK
-        .padding(.top, 20)
         .padding()
     }
 }
@@ -74,7 +80,7 @@ extension LogInView {
             
         } label: {
             Text("Continuar como invitado")
-                .foregroundColor(Color.white)
+                .foregroundColor(Color.theme.tertiary)
                 .font(Font.body.bold())
         }
     }
@@ -84,6 +90,6 @@ extension LogInView {
 
 struct LogInView_Previews: PreviewProvider {
     static var previews: some View {
-        LogInView()
+        WelcomeView()
     }
 }

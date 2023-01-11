@@ -13,13 +13,12 @@ import FacebookCore
 @main
 struct AnimalProApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var notificationService: NotificationService = .shared
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                RootView()
-            }
-            .navigationViewStyle(.stack)
+            RootView()
+                .environmentObject(notificationService)
         }
     }
     

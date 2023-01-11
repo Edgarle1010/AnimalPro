@@ -84,13 +84,12 @@ struct CountryListView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                CircleButtonView(iconName: "chevron.left")
-                    .onTapGesture {
-                        dismiss()
-                    }
-                Spacer()
-            }
+            CircleButtonView(iconName: "xmark")
+                .onTapGesture {
+                    dismiss()
+                }
+                .hAling(.trailing)
+                .padding(.horizontal)
             
             SearchBarView(searchText: $searchText)
             

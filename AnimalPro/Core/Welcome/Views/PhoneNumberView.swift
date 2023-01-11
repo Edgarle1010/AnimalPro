@@ -13,10 +13,12 @@ struct PhoneNumberView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var authVM: AuthViewModel
+    @StateObject private var notificationService: NotificationService = .shared
     @State private var phoneNumber: String = ""
     @State private var showCountryList: Bool = false
     @State private var countryCode: String = "+52"
     @State private var countryFlag: String = "🇲🇽"
+    @State private var showVerificationCodeView: Bool = false
     
     private var phoneWithCountryCode: String {
         return countryCode + phoneNumber
@@ -35,28 +37,25 @@ struct PhoneNumberView: View {
     var body: some View {
         VStack(alignment: .leading) {
             NavigationLink(
-                destination: CountryListView(countryCode: $countryCode, countryFlag: $countryFlag),
-                isActive: $showCountryList,
-                label: {
-                    EmptyView()
-                })
-            
-            NavigationLink(
-                destination: VerificationCodeView(phoneNumber: phoneWithCountryCode),
-                isActive: $authVM.showVerificationCodeView,
-                label: {
-                    EmptyView()
-                })
+                destination: VerificationCodeView(phoneNumber: phoneWithCountryCode).environmentObject(authVM),
+                isActive: $showVerificationCodeView,
+                label: { EmptyView() })
             
             backButton()
             titleSection()
             Spacer()
-            phoneSection()
-            fetchCodeButton()
+            VStack {
+                phoneSection()
+                fetchCodeButton()
+            }
+            .animation(.easeInOut(duration: 0.5), value: phoneNumber)
+            .offset(y: -50)
+            
             Spacer()
         }
-        .animation(.easeInOut(duration: 0.5), value: phoneNumber)
         .navigationBarHidden(true)
+        .spinner($authVM.isLoading)
+        .background(Color.theme.accent.opacity(0.1))
     }
 }
 
@@ -65,13 +64,11 @@ struct PhoneNumberView: View {
 extension PhoneNumberView {
     @ViewBuilder
     private func backButton() -> some View {
-        HStack {
-            CircleButtonView(iconName: "chevron.left")
-                .onTapGesture {
-                    dismiss()
-                }
-            Spacer()
-        }
+        CircleButtonView(iconName: "chevron.left")
+            .onTapGesture {
+                dismiss()
+            }
+            .hAling(.leading)
     }
     
     @ViewBuilder
@@ -102,6 +99,9 @@ extension PhoneNumberView {
             .buttonStyle(ButtonPrimaryStyle(hPadding: 10, color: Color.white))
             .fixedSize()
             .shadow(radius: 3)
+            .fullScreenCover(isPresented: $showCountryList) {
+                CountryListView(countryCode: $countryCode, countryFlag: $countryFlag)
+            }
             
             TextField("Número de teléfono", text: $phoneNumber)
                 .font(.title2.bold())
@@ -116,7 +116,13 @@ extension PhoneNumberView {
         if phoneNumber.count == 10 {
             Button {
                 Task {
-                    await authVM.getVerificationID(phoneNumber: phoneWithCountryCode)
+                    do {
+                        try await authVM.getVerificationID(phoneNumber: phoneWithCountryCode)
+                        notificationService.showBanner("Enviamos un código al \(phoneWithCountryCode)", .success)
+                        showVerificationCodeView.toggle()
+                    } catch {
+                        notificationService.showBanner(error.localizedDescription, .danger)
+                    }
                 }
             } label: {
                 HStack(spacing: 15) {

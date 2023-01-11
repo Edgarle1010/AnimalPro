@@ -19,36 +19,45 @@ struct WelcomeView: View {
     
     var body: some View {
         ZStack {
-            NavigationLink(
-                destination: PhoneNumberView().environmentObject(authVM),
-                isActive: $showPhoneView,
-                label: {
-                    EmptyView()
-                })
-            
-            GeometryReader { geometry in
-                Image("background-img-4")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-            }
-            
-            VStack(spacing: 10) {
-                logoImage()
-                Spacer()
-                appleButton()
-                facebookButton()
-                phoneButton()
-                signInButton()
-            }
-            .sheet(isPresented: $showSignIn) {
-                HalfSheet {
-                    LogInView()
-                        .background(Color.theme.tertiary)
-                }
+            Color.black
+                .opacity(showSignIn ? 0.5 : 0)
                 .ignoresSafeArea()
+                .zIndex(1)
+            
+            ZStack {
+                NavigationLink(
+                    destination: PhoneNumberView().environmentObject(authVM),
+                    isActive: $showPhoneView,
+                    label: {
+                        EmptyView()
+                    })
+                
+                VStack(spacing: 10) {
+                    logoImage()
+                    Spacer()
+                    appleButton()
+                    facebookButton()
+                    phoneButton()
+                    signInButton()
+                }
+                .sheet(isPresented: $showSignIn) {
+                    HalfSheet {
+                        LogInView()
+                            .background(Color.theme.accent.opacity(0.1))
+                    }
+                    .ignoresSafeArea()
+                }
+            } //:ZSTACK
+            .background {
+                GeometryReader { geometry in
+                    Image("background-img-4")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                }
             }
-        }
+        } //:ZSTACK
+        .animation(.easeInOut, value: showSignIn)
     }
 }
 
@@ -83,9 +92,6 @@ extension WelcomeView {
     @ViewBuilder
     private func appleButton() -> some View {
         Button {
-            Task {
-                await authVM.loginApple()
-            }
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "apple.logo")
@@ -94,6 +100,16 @@ extension WelcomeView {
             }
         }
         .buttonStyle(ButtonPrimaryStyle(color: Color.black))
+        .overlay {
+            SignInWithAppleButton { request in
+                authVM.handleSignInWithAppleRequest(request)
+            } onCompletion: { result in
+                Task {
+                    await authVM.handleSignInWithAppleCompletion(result)
+                }
+            }
+            .blendMode(.destinationOver)
+        }
     }
     
     @ViewBuilder
