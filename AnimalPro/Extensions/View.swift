@@ -23,6 +23,18 @@ extension View {
     }
     
     func spinner(_ isLoading: Binding<Bool>) -> some View {
-        return self.modifier(SpinnerModifierBinding(isLoading: isLoading))
+        return self.modifier(SpinnerModifier(isLoading: isLoading))
+    }
+    
+    func customAlert(_ showAlert: Binding<Bool>,
+                     alertType: AlertType = .success,
+                     title: String,
+                     message: String = "",
+                     action: (() -> ())?)  -> some View {
+        return self.modifier(CustomAlertModifier(showAlert: showAlert,
+                                         alertType: alertType,
+                                         title: title,
+                                         message: message,
+                                         action: action))
     }
 }

@@ -11,7 +11,8 @@ struct RootView: View {
     // MARK: - PROPERTIES
     
     @AppStorage(SessionAppValue.isLogged.rawValue) private var isLogged = false
-    
+    @StateObject private var authVM = AuthViewModel()
+    @StateObject private var profileVM = ProfileViewModel()
     
     // MARK: - BODY
     
@@ -19,16 +20,18 @@ struct RootView: View {
         NavigationView {
             ZStack {
                 if isLogged {
-                    HomeView()
+                    HomeView(tabSelection: .home)
                         .navigationBarHidden(true)
-                        .transition(.slide)
+                        .transition(.opacity)
                 } else {
                     WelcomeView()
                         .navigationBarHidden(true)
-                        .transition(.slide)
+                        .transition(.opacity)
                 }
             }
             .animation(.easeInOut, value: isLogged)
+            .environmentObject(authVM)
+            .environmentObject(profileVM)
         }
         .navigationViewStyle(.stack)
         .banner()

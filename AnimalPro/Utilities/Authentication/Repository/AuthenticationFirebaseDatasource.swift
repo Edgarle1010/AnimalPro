@@ -7,14 +7,18 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 import AuthenticationServices
 import CryptoKit
 
-final class AuthenticationFirebaseDatasource: NSObject {
+final class AuthenticationFirebaseDatasource {
     let session: SessionAppService = .shared
     let facebookAuthentication = FacebookAuthentication()
     let phoneAuthentication = PhoneAuthentication()
+    let emailAuthentication = EmailAuthentication()
     let firebaseAuth = Auth.auth()
+    let db = Firestore.firestore()
     var authStateHandler: AuthStateDidChangeListenerHandle?
     
     fileprivate var currentNonce: String?
@@ -47,14 +51,18 @@ final class AuthenticationFirebaseDatasource: NSObject {
                 let credential = OAuthProvider.credential(withProviderID: "apple.com",
                                                           idToken: idTokenString,
                                                           rawNonce: nonce)
-                Task {
-                    do {
-                        let result = try await firebaseAuth.signIn(with: credential)
-                        session.setUser(user: .init(email: result.user.email ?? ""), loggedBy: .apple)
-                        await updateDisplayName(for: result.user, with: appleIDCredential)
-                    } catch {
-                        print("Error authenticating: \(error.localizedDescription)")
-                    }
+                do {
+                    let authDataResult = try await firebaseAuth.signIn(with: credential)
+                    let uid = authDataResult.user.uid
+                    let email = authDataResult.user.email
+                    let user = UserModel(uid: uid, email: email, loginType: .apple, isActive: true)
+                    let authUser = try await validateUser(user)
+                    await updateDisplayName(for: authDataResult.user, with: appleIDCredential)
+                    session.setUser(user: authUser, loggedBy: .apple)
+                    session.set(true, forKey: .loggedSuccess)
+                } catch {
+                    print("Error authenticating: \(error.localizedDescription)")
+                    throw error
                 }
             }
         }
@@ -65,8 +73,10 @@ final class AuthenticationFirebaseDatasource: NSObject {
             let accessToken = try await facebookAuthentication.loginFacebook()
             let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
             let authDataResult = try await firebaseAuth.signIn(with: credential)
-            let email = authDataResult.user.email ?? "No email"
-            return .init(email: email)
+            let uid = authDataResult.user.uid
+            let email = authDataResult.user.email
+            let user = UserModel(uid: uid, email: email, loginType: .facebook, isActive: true)
+            return try await validateUser(user)
         } catch {
             print("error: \(error.localizedDescription)")
             throw error
@@ -88,8 +98,54 @@ final class AuthenticationFirebaseDatasource: NSObject {
         
         do {
             let authDataResult = try await firebaseAuth.signIn(with: credential)
-            let email = authDataResult.user.email ?? "No email"
-            return .init(email: email)
+            let uid = authDataResult.user.uid
+            let email = authDataResult.user.email
+            let phone = authDataResult.user.phoneNumber
+            let user = UserModel(uid: uid, email: email, phoneNumber: phone, loginType: .phone, isActive: true)
+            return try await validateUser(user)
+        } catch {
+            throw error
+        }
+    }
+    
+    func verifyPhoneCodeToLink(verificationCode: String) async throws {
+        let verificationID = session.getString(forKey: .authVerificationID)
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationID ?? "", verificationCode: verificationCode)
+        
+        do {
+            try await firebaseAuth.currentUser?.link(with: credential)
+            try await savePhoneNumber()
+        } catch {
+            throw error
+        }
+    }
+    
+    func sendSignInLink(email: String) async throws {
+        do {
+            _ = try await emailAuthentication.sendSignInLink(email: email)
+        } catch {
+            throw error
+        }
+    }
+    
+    func passwordlessSignIn(email: String, link: String) async throws -> UserModel {
+        do {
+            let authDataResult = try await firebaseAuth.signIn(withEmail: email, link: link)
+            let uid = authDataResult.user.uid
+            let email = authDataResult.user.email
+            let user = UserModel(uid: uid, email: email, loginType: .email, isActive: true)
+            return try await validateUser(user)
+        } catch {
+            throw error
+        }
+    }
+    
+    func signInAnonymously() async throws -> UserModel {
+        do {
+            let authDataResult = try await firebaseAuth.signInAnonymously()
+            let uid = authDataResult.user.uid
+            let user = UserModel(uid: uid, loginType: .guest, isActive: true)
+            return user
         } catch {
             throw error
         }
@@ -118,12 +174,10 @@ final class AuthenticationFirebaseDatasource: NSObject {
     
     private func updateDisplayName(for user: User, with appleIDCredential: ASAuthorizationAppleIDCredential, force: Bool = false) async {
         if let currentDisplayName = Auth.auth().currentUser?.displayName, !currentDisplayName.isEmpty {
-            // current user is non-empty, don't overwrite it
         } else {
             let changeRequest = user.createProfileChangeRequest()
             do {
                 try await changeRequest.commitChanges()
-                //session.user?.displayName = Auth.auth().currentUser?.displayName ?? ""
             } catch {
                 print("Unable to update the user's displayname: \(error.localizedDescription)")
                 errorMessage = error.localizedDescription
@@ -173,5 +227,68 @@ final class AuthenticationFirebaseDatasource: NSObject {
       }.joined()
 
       return hashString
+    }
+    
+    // MARK: - FIRESTORE
+    
+    func validateUser(_ user: UserModel) async throws -> UserModel {
+        if try await isActive(uid: user.uid) {
+            try await createUser(user: user
+            return user
+        } else {
+            throw "Tu usuario se encuentra deshabilitado. Por favor, contacta a soporte para revisar tu caso."
+        }
+    }
+    
+    func createUser(user: UserModel) async throws {
+        let docRef = db.collection("users").document(user.uid)
+        
+        do {
+            try docRef.setData(from: user)
+        } catch {
+            throw error
+        }
+    }
+    
+    func isActive(uid: String) async throws -> Bool {
+        let docRef = db.collection("users").document(uid)
+        
+        do {
+            let document = try await docRef.getDocument()
+            if document.exists {
+                let data = document.data()
+                if let data = data {
+                    return data["isActive"] as? Bool ?? true
+                }
+            }
+            return true
+        } catch {
+            throw error
+        }
+    }
+    
+    func findPhoneNumber(phoneNumber: String) async throws -> Bool {
+        let docRef = db.collection("users").whereField("phoneNumber", isEqualTo: phoneNumber)
+        
+        do {
+            let querySnapshot = try await docRef.getDocuments()
+            for _ in querySnapshot.documents {
+                return true
+            }
+            return false
+        } catch {
+            throw error
+        }
+    }
+    
+    func savePhoneNumber() async throws {
+        guard let uid = firebaseAuth.currentUser?.uid else { return }
+        let docRef = db.collection("users").document(uid)
+        
+        do {
+            try await docRef.updateData(["phoneNumber": firebaseAuth.currentUser?.phoneNumber ?? ""])
+        } catch {
+            throw error
+        }
     }
 }

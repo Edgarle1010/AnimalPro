@@ -5,8 +5,6 @@
 //  Created by Edgar López Enríquez on 09/01/23.
 //
 
-import Foundation
-
 import SwiftUI
 import CoreData
 
@@ -27,6 +25,11 @@ class DeveloperPreview {
         vm.showBanner = true
         vm.bannerTitle = "No has dado los permisos para iniciar con Facebook"
         vm.bannerType = .danger
+        return vm
+    }()
+    
+    @StateObject var profileVM: ProfileViewModel = {
+        let vm = ProfileViewModel()
         return vm
     }()
 }

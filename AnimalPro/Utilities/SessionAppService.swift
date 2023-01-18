@@ -10,6 +10,7 @@ import Foundation
 enum SessionAppValue: String {
     case isLogged = "isLogged"
     case loggedBy = "loggedBy"
+    case loggedSuccess = "loggedSuccess"
     case authVerificationID = "authVerificationID"
 }
 

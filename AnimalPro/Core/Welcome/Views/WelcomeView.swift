@@ -11,9 +11,9 @@ import AuthenticationServices
 struct WelcomeView: View {
     // MARK: - PROPERTIES
     
-    @StateObject private var authVM = AuthViewModel()
+    @EnvironmentObject private var authVM: AuthViewModel
+    @StateObject private var notificationService: NotificationService = .shared
     @State private var showSignIn: Bool = false
-    @State private var showPhoneView: Bool = false
     
     // MARK: - BODY
     
@@ -24,31 +24,33 @@ struct WelcomeView: View {
                 .ignoresSafeArea()
                 .zIndex(1)
             
-            ZStack {
+            VStack(spacing: 10) {
+                logoImage()
+                Spacer()
+                appleButton()
+                facebookButton()
+                phoneButton()
+                signInButton()
+            }
+            .sheet(isPresented: $showSignIn) {
+                HalfSheet {
+                    LogInView()
+                        .environmentObject(authVM)
+                        .background(Color.theme.accent.opacity(0.1))
+                }
+                .ignoresSafeArea()
+            }
+            .background {
                 NavigationLink(
                     destination: PhoneNumberView().environmentObject(authVM),
-                    isActive: $showPhoneView,
-                    label: {
-                        EmptyView()
-                    })
+                    isActive: $authVM.showPhoneView,
+                    label: {EmptyView() })
                 
-                VStack(spacing: 10) {
-                    logoImage()
-                    Spacer()
-                    appleButton()
-                    facebookButton()
-                    phoneButton()
-                    signInButton()
-                }
-                .sheet(isPresented: $showSignIn) {
-                    HalfSheet {
-                        LogInView()
-                            .background(Color.theme.accent.opacity(0.1))
-                    }
-                    .ignoresSafeArea()
-                }
-            } //:ZSTACK
-            .background {
+                NavigationLink(
+                    destination: EmailView().environmentObject(authVM),
+                    isActive: $authVM.showEmailView,
+                    label: { EmptyView() })
+                
                 GeometryReader { geometry in
                     Image("background-img-4")
                         .resizable()
@@ -58,6 +60,7 @@ struct WelcomeView: View {
             }
         } //:ZSTACK
         .animation(.easeInOut, value: showSignIn)
+        .spinner($authVM.isLoading)
     }
 }
 
@@ -78,7 +81,7 @@ extension WelcomeView {
     @ViewBuilder
     private func phoneButton() -> some View {
         Button {
-            showPhoneView.toggle()
+            authVM.showPhoneView.toggle()
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "phone.circle")
@@ -105,10 +108,15 @@ extension WelcomeView {
                 authVM.handleSignInWithAppleRequest(request)
             } onCompletion: { result in
                 Task {
-                    await authVM.handleSignInWithAppleCompletion(result)
+                    do {
+                        try await authVM.handleSignInWithAppleCompletion(result)
+                    } catch {
+                        notificationService.showBanner(error.localizedDescription, .danger)
+                    }
                 }
             }
             .blendMode(.destinationOver)
+            .opacity(authVM.isLoading ? 0 : 1)
         }
     }
     
@@ -116,7 +124,11 @@ extension WelcomeView {
     private func facebookButton() -> some View {
         Button {
             Task {
-                await authVM.loginFacebook()
+                do {
+                    try await authVM.loginFacebook()
+                } catch {
+                    notificationService.showBanner(error.localizedDescription, .danger)
+                }
             }
         } label: {
             HStack(spacing: 10) {
@@ -144,5 +156,6 @@ extension WelcomeView {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView()
+            .environmentObject(dev.authVM)
     }
 }

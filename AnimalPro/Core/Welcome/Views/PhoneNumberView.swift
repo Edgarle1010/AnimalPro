@@ -19,6 +19,7 @@ struct PhoneNumberView: View {
     @State private var countryCode: String = "+52"
     @State private var countryFlag: String = "🇲🇽"
     @State private var showVerificationCodeView: Bool = false
+    var isFromProfile: Bool = false
     
     private var phoneWithCountryCode: String {
         return countryCode + phoneNumber
@@ -36,11 +37,6 @@ struct PhoneNumberView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NavigationLink(
-                destination: VerificationCodeView(phoneNumber: phoneWithCountryCode).environmentObject(authVM),
-                isActive: $showVerificationCodeView,
-                label: { EmptyView() })
-            
             backButton()
             titleSection()
             Spacer()
@@ -55,7 +51,15 @@ struct PhoneNumberView: View {
         }
         .navigationBarHidden(true)
         .spinner($authVM.isLoading)
-        .background(Color.theme.accent.opacity(0.1))
+        .background {
+            NavigationLink(
+                destination: VerificationCodeView(isFromProfile: isFromProfile, phoneNumber: phoneWithCountryCode)
+                    .environmentObject(authVM),
+                isActive: $showVerificationCodeView,
+                label: { EmptyView() })
+            
+            Color.theme.accent.opacity(0.1)
+        }
     }
 }
 

@@ -15,6 +15,7 @@ struct VerificationCodeView: View {
     @StateObject private var notificationService: NotificationService = .shared
     @StateObject private var otpVM: OTPViewModel = .init()
     @FocusState private var activeField: OTPField?
+    var isFromProfile: Bool = false
     var phoneNumber: String
     
     // MARK: - FUNCTIONS
@@ -151,10 +152,19 @@ extension VerificationCodeView {
         if !checkStates() {
             Button {
                 Task {
-                    do {
-                        try await authVM.verifyPhoneCode(verificationCode: otpVM.getOTPString())
-                    } catch {
-                        notificationService.showBanner(error.localizedDescription, .danger)
+                    if isFromProfile {
+                        do {
+                            try await authVM.verifyPhoneCodeToLink(verificationCode: otpVM.getOTPString())
+                            notificationService.showBanner("Se ha vinculado tu número de teléfono correctamente", .success)
+                        } catch {
+                            notificationService.showBanner(error.localizedDescription, .danger)
+                        }
+                    } else {
+                        do {
+                            try await authVM.verifyPhoneCode(verificationCode: otpVM.getOTPString())
+                        } catch {
+                            notificationService.showBanner(error.localizedDescription, .danger)
+                        }
                     }
                 }
             } label: {

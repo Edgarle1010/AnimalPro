@@ -11,15 +11,11 @@ struct LogInView: View {
     // MARK: - BODY
     
     @Environment(\.dismiss) private var dismiss
-    @State private var showEmailView: Bool = false
+    @EnvironmentObject private var authVM: AuthViewModel
+    @StateObject private var notificationService: NotificationService = .shared
     
     var body: some View {
         VStack(spacing: 20) {
-            NavigationLink(
-                destination: EmailView(),
-                isActive: $showEmailView,
-                label: { EmptyView() })
-            
             titleSection()
             Divider()
                 .padding(.horizontal)
@@ -30,6 +26,7 @@ struct LogInView: View {
             guestButton()
             Spacer()
         } //:VSTACK
+        .spinner($authVM.isLoading)
         .padding()
     }
 }
@@ -55,7 +52,8 @@ extension LogInView {
     @ViewBuilder
     private func emailButton() -> some View {
         Button {
-            showEmailView.toggle()
+            dismiss()
+            authVM.showEmailView.toggle()
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "envelope")
@@ -71,7 +69,8 @@ extension LogInView {
     @ViewBuilder
     private func phoneButton() -> some View {
         Button {
-            
+            dismiss()
+            authVM.showPhoneView.toggle()
         } label: {
             HStack(spacing: 10) {
                 Image(systemName: "phone.circle")
@@ -87,7 +86,13 @@ extension LogInView {
     @ViewBuilder
     private func guestButton() -> some View {
         Button {
-            
+            Task {
+                do {
+                    try await authVM.signInAnonymously()
+                } catch {
+                    notificationService.showBanner(error.localizedDescription, .danger)
+                }
+            }
         } label: {
             Text("Continuar como invitado")
                 .foregroundColor(Color.theme.tertiary)
@@ -102,6 +107,7 @@ struct LogInView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             LogInView()
+                .environmentObject(dev.authVM)
         }
     }
 }

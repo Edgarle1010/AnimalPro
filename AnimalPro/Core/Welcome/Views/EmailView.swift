@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Combine
+import Firebase
 
 struct EmailView: View {
     // MARK: - PROPERTIES
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var authVM: AuthViewModel
+    @StateObject private var notificationService: NotificationService = .shared
+    @State private var isValidEmail: Bool = false
     @State private var email: String = ""
     
     // MARK: - BODY
@@ -23,11 +28,25 @@ struct EmailView: View {
                 emailSection()
                 fetchLinkButton()
             }
-            //.animation(.easeInOut(duration: 0.5), value: phoneNumber)
+            .animation(.easeInOut, value: isValidEmail)
             .padding(.top, 100)
         }
         .vAling(.top)
         .navigationBarHidden(true)
+        .spinner($authVM.isLoading)
+        .background(Color.theme.accent.opacity(0.1))
+        .onOpenURL { url in
+            let link = url.absoluteString
+            if Auth.auth().isSignIn(withEmailLink: link) {
+                Task {
+                    do {
+                        try await authVM.passwordlessSignIn(email: email, link: link)
+                    } catch {
+                        notificationService.showBanner(error.localizedDescription, .danger)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -54,18 +73,26 @@ extension EmailView {
     @ViewBuilder
     private func emailSection() -> some View {
         TextField("Tu correo", text: $email)
-            .font(.title2.bold())
-            .keyboardType(.emailAddress)
-            //.onReceive(Just(phoneNumber)) { _ in limitText(10) }
+        .font(.title2.bold())
+        .keyboardType(.emailAddress)
         .padding(.horizontal)
+        .onReceive(Just(email)) { newValue in
+            isValidEmail = authVM.textFieldValidatorEmail(newValue)
+            email = newValue.lowercased()
+        }
     }
     
     @ViewBuilder
     private func fetchLinkButton() -> some View {
-        //if phoneNumber.count == 10 {
+        if isValidEmail {
             Button {
                 Task {
-                    
+                    do {
+                        try await authVM.sendSignInLink(email: email)
+                        notificationService.showBanner("Enviamos un enlace al \(email). Ábrelo para iniciar sesión", .success)
+                    } catch {
+                        notificationService.showBanner(error.localizedDescription, .danger)
+                    }
                 }
             } label: {
                 HStack(spacing: 15) {
@@ -77,7 +104,7 @@ extension EmailView {
             .buttonStyle(ButtonPrimaryStyle(hPadding: 20, color: Color.theme.tertiary))
             .padding(.top, 20)
             .transition(.opacity)
-        //}
+        }
     }
 }
 
@@ -86,5 +113,6 @@ extension EmailView {
 struct EmailView_Previews: PreviewProvider {
     static var previews: some View {
         EmailView()
+            .environmentObject(dev.authVM)
     }
 }

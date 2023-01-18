@@ -1,5 +1,5 @@
 //
-//  SpinnerModifierBinding.swift
+//  SpinnerModifier.swift
 //  AnimalPro
 //
 //  Created by Edgar López Enríquez on 10/01/23.
@@ -8,9 +8,8 @@
 import SwiftUI
 import ActivityIndicatorView
 
-struct SpinnerModifierBinding: ViewModifier {
+struct SpinnerModifier: ViewModifier {
     @Binding var isLoading: Bool
-    let kPreviewBackground = Color.theme.tertiary.opacity(0.1)
     
     func body(content: Content) -> some View {
         ZStack {
@@ -37,6 +36,6 @@ struct SpinnerModifierBinding_Previews: PreviewProvider {
     static var previews: some View {
         PhoneNumberView()
             .environmentObject(dev.authVM)
-            .modifier(SpinnerModifierBinding(isLoading: .constant(true)))
+            .modifier(SpinnerModifier(isLoading: .constant(true)))
     }
 }
