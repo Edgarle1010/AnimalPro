@@ -37,7 +37,7 @@ struct ProfileView: View {
                 isActive: $profileVM.showProfileData,
                 label: { EmptyView() })
             
-            Color.theme.accent.opacity(0.1)
+            Color.theme.primary.opacity(0.1).ignoresSafeArea()
         }
         .task {
             try? await profileVM.fetchUserData()

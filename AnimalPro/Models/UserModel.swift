@@ -26,9 +26,9 @@ struct UserModel: Codable {
     var locations: [String]?
     var pets: [PetModel]?
     var loginType: LoginType
-    var isActive: Bool
+    var isActive: Bool?
     
-    init(uid: String, names: String? = nil, lastNames: String? = nil, email: String? = nil, phoneNumber: String? = nil, birthday: String? = nil, profileImageUrl: String? = nil, locations: [String]? = nil, pets: [PetModel]? = nil, loginType: LoginType, isActive: Bool) {
+    init(uid: String, names: String? = nil, lastNames: String? = nil, email: String? = nil, phoneNumber: String? = nil, birthday: String? = nil, profileImageUrl: String? = nil, locations: [String]? = nil, pets: [PetModel]? = nil, loginType: LoginType, isActive: Bool? = nil) {
         self.uid = uid
         self.names = names
         self.lastNames = lastNames

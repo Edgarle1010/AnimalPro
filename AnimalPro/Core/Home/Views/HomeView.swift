@@ -25,7 +25,7 @@ struct HomeView: View {
                     .transition(.opacity)
             } else {
                 CustomTabBarContainerView(selection: $tabSelection) {
-                    Color.theme.accent.opacity(0.1)
+                    PetsView(petsVM: .init())
                         .tabBarItem(tab: .home, selection: $tabSelection)
                     
                     Color.theme.accent.opacity(0.1)

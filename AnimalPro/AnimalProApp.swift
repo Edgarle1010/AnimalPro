@@ -9,16 +9,22 @@ import SwiftUI
 import FirebaseCore
 import FirebaseAuth
 import FacebookCore
+import URLImage
+import URLImageStore
 
 @main
 struct AnimalProApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var notificationService: NotificationService = .shared
+    let urlImageService = URLImageService(fileStore: URLImageFileStore(),
+                                              inMemoryStore: URLImageInMemoryStore())
     
     var body: some Scene {
         WindowGroup {
             RootView()
+                .preferredColorScheme(.light)
                 .environmentObject(notificationService)
+                .environment(\.urlImageService, urlImageService)
         }
     }
     

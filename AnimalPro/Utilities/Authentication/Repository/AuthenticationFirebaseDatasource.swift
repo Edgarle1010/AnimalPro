@@ -55,7 +55,7 @@ final class AuthenticationFirebaseDatasource {
                     let authDataResult = try await firebaseAuth.signIn(with: credential)
                     let uid = authDataResult.user.uid
                     let email = authDataResult.user.email
-                    let user = UserModel(uid: uid, email: email, loginType: .apple, isActive: true)
+                    let user = UserModel(uid: uid, email: email, loginType: .apple)
                     let authUser = try await validateUser(user)
                     await updateDisplayName(for: authDataResult.user, with: appleIDCredential)
                     session.setUser(user: authUser, loggedBy: .apple)
@@ -75,7 +75,7 @@ final class AuthenticationFirebaseDatasource {
             let authDataResult = try await firebaseAuth.signIn(with: credential)
             let uid = authDataResult.user.uid
             let email = authDataResult.user.email
-            let user = UserModel(uid: uid, email: email, loginType: .facebook, isActive: true)
+            let user = UserModel(uid: uid, email: email, loginType: .facebook)
             return try await validateUser(user)
         } catch {
             print("error: \(error.localizedDescription)")
@@ -101,7 +101,7 @@ final class AuthenticationFirebaseDatasource {
             let uid = authDataResult.user.uid
             let email = authDataResult.user.email
             let phone = authDataResult.user.phoneNumber
-            let user = UserModel(uid: uid, email: email, phoneNumber: phone, loginType: .phone, isActive: true)
+            let user = UserModel(uid: uid, email: email, phoneNumber: phone, loginType: .phone)
             return try await validateUser(user)
         } catch {
             throw error
@@ -133,7 +133,7 @@ final class AuthenticationFirebaseDatasource {
             let authDataResult = try await firebaseAuth.signIn(withEmail: email, link: link)
             let uid = authDataResult.user.uid
             let email = authDataResult.user.email
-            let user = UserModel(uid: uid, email: email, loginType: .email, isActive: true)
+            let user = UserModel(uid: uid, email: email, loginType: .email)
             return try await validateUser(user)
         } catch {
             throw error
@@ -144,7 +144,7 @@ final class AuthenticationFirebaseDatasource {
         do {
             let authDataResult = try await firebaseAuth.signInAnonymously()
             let uid = authDataResult.user.uid
-            let user = UserModel(uid: uid, loginType: .guest, isActive: true)
+            let user = UserModel(uid: uid, loginType: .guest)
             return user
         } catch {
             throw error
@@ -232,50 +232,20 @@ final class AuthenticationFirebaseDatasource {
     // MARK: - FIRESTORE
     
     func validateUser(_ user: UserModel) async throws -> UserModel {
-        if try await isActive(uid: user.uid) {
-            try await createUser(user: user
-            return user
-        } else {
-            throw "Tu usuario se encuentra deshabilitado. Por favor, contacta a soporte para revisar tu caso."
-        }
-    }
-    
-    func createUser(user: UserModel) async throws {
         let docRef = db.collection("users").document(user.uid)
-        
-        do {
-            try docRef.setData(from: user)
-        } catch {
-            throw error
-        }
-    }
-    
-    func isActive(uid: String) async throws -> Bool {
-        let docRef = db.collection("users").document(uid)
         
         do {
             let document = try await docRef.getDocument()
             if document.exists {
-                let data = document.data()
-                if let data = data {
-                    return data["isActive"] as? Bool ?? true
+                let existingUser = try document.data(as: UserModel.self)
+                if existingUser.isActive ?? true {
+                    return existingUser
+                } else {
+                    throw "Tu usuario se encuentra deshabilitado. Por favor, contacta a soporte para revisar tu caso."
                 }
             }
-            return true
-        } catch {
-            throw error
-        }
-    }
-    
-    func findPhoneNumber(phoneNumber: String) async throws -> Bool {
-        let docRef = db.collection("users").whereField("phoneNumber", isEqualTo: phoneNumber)
-        
-        do {
-            let querySnapshot = try await docRef.getDocuments()
-            for _ in querySnapshot.documents {
-                return true
-            }
-            return false
+            try docRef.setData(from: user)
+            return user
         } catch {
             throw error
         }

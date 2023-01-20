@@ -32,4 +32,21 @@ class DeveloperPreview {
         let vm = ProfileViewModel()
         return vm
     }()
+    
+    @StateObject var petsVM: PetsViewModel = {
+        let vm = PetsViewModel()
+        vm.banners = [
+            .init(
+                id: "1",
+                imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-2x1-gatos.jpg?alt=media&token=156dd004-4fb6-4e53-b675-ed2364a60d33",
+                action: .shop),
+            .init(id: "2", imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-food-10.jpg?alt=media&token=11f6ab26-ccbc-4a3f-8651-bf0bdd214c05", action: .shop)]
+        return vm
+    }()
+    
+    @State var banners: [BannerModel] = [
+        .init(id: "1",
+              imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-2x1-gatos.jpg?alt=media&token=156dd004-4fb6-4e53-b675-ed2364a60d33",
+              action: .shop),
+        .init(id: "2", imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-food-10.jpg?alt=media&token=11f6ab26-ccbc-4a3f-8651-bf0bdd214c05", action: .shop)]
 }

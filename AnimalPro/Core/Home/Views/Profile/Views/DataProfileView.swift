@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import URLImage
 
 struct DataProfileView: View {
     // MARK: - PROPERTIES
@@ -13,6 +14,7 @@ struct DataProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var profileVM: ProfileViewModel
     @StateObject private var notificationService: NotificationService = .shared
+    @State private var showingImagePicker = false
     
     // MARK: - BODY
     
@@ -39,6 +41,8 @@ struct DataProfileView: View {
                 .opacity(0.1)
                 .ignoresSafeArea()
         }
+        .onAppear { profileVM.delegate = self }
+        .onDisappear { profileVM.delegate = nil }
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
@@ -46,12 +50,16 @@ struct DataProfileView: View {
             await profileVM.fetchProfileTextField()
             try? await profileVM.fetchUserData()
         }
+        .onChange(of: profileVM.inputImage) { _ in profileVM.loadImage() }
+        .sheet(isPresented: $showingImagePicker) {
+            ImagePicker(image: $profileVM.inputImage)
+        }
     }
 }
 
 // MARK: - EXTENSION
 
-extension DataProfileView {
+extension DataProfileView: ProfileDelegate {
     @ViewBuilder
     private func backButton() -> some View {
         CircleButtonView(iconName: "chevron.left")
@@ -62,16 +70,54 @@ extension DataProfileView {
     
     @ViewBuilder
     private func titleSection() -> some View {
-        HStack {
+        HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Mi Perfil")
                     .font(.title.bold())
                 
                 Text("Actualiza tus datos personales")
                     .font(.callout)
+                    .minimumScaleFactor(0.5)
             }
+            
+            Spacer()
+            
+            VStack {
+                URLImage(profileVM.urlProfileImage) { progress in
+                    LoadingImageView()
+                } failure: { error, retry in
+                    VStack {
+                        Image(systemName: "xmark.circle")
+                            .font(.system(size: 60))
+                        
+                        Text("Error")
+                            .font(.caption2.bold())
+                    }
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .foregroundColor(.theme.red)
+                } content: { image, info in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                }
+                .overlay(Circle().stroke(Color.theme.primary, lineWidth: 4))
+                .padding(.top)
+                
+                Button {
+                    showingImagePicker.toggle()
+                } label: {
+                    Text("Editar")
+                        .font(.footnote.bold())
+                        .foregroundColor(.theme.tertiary)
+                }
+
+            }
+
         } //:HSTACK
-        .padding(.horizontal)
+        .padding(.horizontal, 20)
     }
     
     @ViewBuilder
@@ -119,6 +165,16 @@ extension DataProfileView {
                     }
                 }
             }
+    }
+    
+    // MARK: - DELEGATE
+    
+    func onError(_ error: String) {
+        notificationService.showBanner(error, .danger)
+    }
+    
+    func onSuccess(_ message: String) {
+        notificationService.showBanner(message, .success)
     }
 }
 

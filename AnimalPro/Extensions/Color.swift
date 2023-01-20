@@ -13,6 +13,7 @@ extension Color {
 
 struct ColorTheme {
     let accent = Color("AccentColor")
+    let primary = Color("PrimaryColor")
     let secondary = Color("SecondaryColor")
     let tertiary = Color("TertiaryColor")
     let red = Color("RedColor")
