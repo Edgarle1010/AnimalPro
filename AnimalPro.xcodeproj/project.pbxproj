@@ -80,8 +80,16 @@
 		B333878E296E07200096C683 /* SpinnerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878D296E07200096C683 /* SpinnerModifier.swift */; };
 		B3338790296E33A90096C683 /* BannerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B333878F296E33A90096C683 /* BannerModifier.swift */; };
 		B3338793296E34D50096C683 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3338792296E34D50096C683 /* NotificationService.swift */; };
+		B35038B1297CAF9700995AA7 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35038B0297CAF9700995AA7 /* AddPetView.swift */; };
+		B35038B3297CC16600995AA7 /* CirclePetTypeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35038B2297CC16600995AA7 /* CirclePetTypeItem.swift */; };
+		B35038B7297CD5EE00995AA7 /* PetProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35038B6297CD5EE00995AA7 /* PetProfileView.swift */; };
+		B35038B9297DFA8A00995AA7 /* RaceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35038B8297DFA8A00995AA7 /* RaceListView.swift */; };
+		B35038BB297E539300995AA7 /* CircleBiologicalSexItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35038BA297E539300995AA7 /* CircleBiologicalSexItem.swift */; };
+		B36F1789297C7460003B0FF2 /* CustomCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36F1788297C7460003B0FF2 /* CustomCarousel.swift */; };
 		B385864D297769E90086A5DD /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B385864C297769E90086A5DD /* Date.swift */; };
 		B385864F29777E4F0086A5DD /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B385864E29777E4F0086A5DD /* Binding.swift */; };
+		B39C4B7B297F1A0600F03F0B /* GlobalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39C4B7A297F1A0600F03F0B /* GlobalDelegate.swift */; };
+		B39C4B7E297F1A4500F03F0B /* PetsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39C4B7D297F1A4500F03F0B /* PetsDelegate.swift */; };
 		B3AC82172976610B0082E4AE /* HospitalizationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AC82162976610B0082E4AE /* HospitalizationModel.swift */; };
 		B3AC8219297662480082E4AE /* MedicalAppointmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AC8218297662480082E4AE /* MedicalAppointmentModel.swift */; };
 		B3AC821B2976799E0082E4AE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3AC821A2976799E0082E4AE /* String.swift */; };
@@ -102,6 +110,7 @@
 		B3E0CC6F296A60260078C647 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E0CC6E296A60260078C647 /* Color.swift */; };
 		B3E0CC72296A61AF0078C647 /* ButtonPrimaryStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E0CC71296A61AF0078C647 /* ButtonPrimaryStyle.swift */; };
 		B3E30ACB2970840000596A78 /* LoginSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E30ACA2970840000596A78 /* LoginSuccessView.swift */; };
+		B3FF55BD297F53C800B1E271 /* PetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FF55BC297F53C800B1E271 /* PetDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,8 +156,16 @@
 		B333878D296E07200096C683 /* SpinnerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerModifier.swift; sourceTree = "<group>"; };
 		B333878F296E33A90096C683 /* BannerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerModifier.swift; sourceTree = "<group>"; };
 		B3338792296E34D50096C683 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B35038B0297CAF9700995AA7 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
+		B35038B2297CC16600995AA7 /* CirclePetTypeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclePetTypeItem.swift; sourceTree = "<group>"; };
+		B35038B6297CD5EE00995AA7 /* PetProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetProfileView.swift; sourceTree = "<group>"; };
+		B35038B8297DFA8A00995AA7 /* RaceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceListView.swift; sourceTree = "<group>"; };
+		B35038BA297E539300995AA7 /* CircleBiologicalSexItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBiologicalSexItem.swift; sourceTree = "<group>"; };
+		B36F1788297C7460003B0FF2 /* CustomCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCarousel.swift; sourceTree = "<group>"; };
 		B385864C297769E90086A5DD /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		B385864E29777E4F0086A5DD /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
+		B39C4B7A297F1A0600F03F0B /* GlobalDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalDelegate.swift; sourceTree = "<group>"; };
+		B39C4B7D297F1A4500F03F0B /* PetsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsDelegate.swift; sourceTree = "<group>"; };
 		B3AC82162976610B0082E4AE /* HospitalizationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HospitalizationModel.swift; sourceTree = "<group>"; };
 		B3AC8218297662480082E4AE /* MedicalAppointmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalAppointmentModel.swift; sourceTree = "<group>"; };
 		B3AC821A2976799E0082E4AE /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -170,6 +187,7 @@
 		B3E0CC6E296A60260078C647 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B3E0CC71296A61AF0078C647 /* ButtonPrimaryStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPrimaryStyle.swift; sourceTree = "<group>"; };
 		B3E30ACA2970840000596A78 /* LoginSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSuccessView.swift; sourceTree = "<group>"; };
+		B3FF55BC297F53C800B1E271 /* PetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -372,6 +390,22 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		B39C4B79297F19E600F03F0B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B39C4B7A297F1A0600F03F0B /* GlobalDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B39C4B7C297F1A3500F03F0B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B39C4B7D297F1A4500F03F0B /* PetsDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		B3CD768F296A590E0027119E = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +433,7 @@
 				B3E0CC66296A5D190078C647 /* Extensions */,
 				B3E0CC67296A5D400078C647 /* Services */,
 				B3E0CC68296A5D510078C647 /* Models */,
+				B39C4B79297F19E600F03F0B /* Protocols */,
 				B3E0CC69296A5D860078C647 /* Core */,
 				B3CD769F296A59100027119E /* Assets.xcassets */,
 				B3CD76A1296A59100027119E /* Preview Content */,
@@ -425,6 +460,7 @@
 		B3DFE0682978FEE00094D1FA /* Pets */ = {
 			isa = PBXGroup;
 			children = (
+				B39C4B7C297F1A3500F03F0B /* Protocols */,
 				B3DFE06A2978FEF50094D1FA /* ViewModels */,
 				B3DFE0692978FEF00094D1FA /* Views */,
 			);
@@ -435,6 +471,10 @@
 			isa = PBXGroup;
 			children = (
 				B3DFE06B2978FF030094D1FA /* PetsView.swift */,
+				B35038B0297CAF9700995AA7 /* AddPetView.swift */,
+				B35038B6297CD5EE00995AA7 /* PetProfileView.swift */,
+				B35038B8297DFA8A00995AA7 /* RaceListView.swift */,
+				B3FF55BC297F53C800B1E271 /* PetDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -539,6 +579,9 @@
 				B3338778296CC2F80096C683 /* SearchBarView.swift */,
 				B32C15DF2978A2D9008DC55D /* LoadingImageView.swift */,
 				B3DFE06D29790CEA0094D1FA /* InfiniteCarouselView.swift */,
+				B36F1788297C7460003B0FF2 /* CustomCarousel.swift */,
+				B35038B2297CC16600995AA7 /* CirclePetTypeItem.swift */,
+				B35038BA297E539300995AA7 /* CircleBiologicalSexItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -680,22 +723,29 @@
 				B32C15E02978A2D9008DC55D /* LoadingImageView.swift in Sources */,
 				B300A8F8297130A400D8C4F9 /* CustomAlertModifier.swift in Sources */,
 				B3030BD329722B07007F2017 /* DataProfileView.swift in Sources */,
+				B39C4B7E297F1A4500F03F0B /* PetsDelegate.swift in Sources */,
 				B300A8F12971224400D8C4F9 /* ListRowItem.swift in Sources */,
 				B3338773296CA5290096C683 /* PhoneNumberView.swift in Sources */,
 				B333877B296CC34E0096C683 /* UIApplication.swift in Sources */,
 				B300A8E32970A54900D8C4F9 /* CustomTabBarContainerView.swift in Sources */,
+				B35038BB297E539300995AA7 /* CircleBiologicalSexItem.swift in Sources */,
 				B300A8E92970A60E00D8C4F9 /* TabBarItemsPreferenceKey.swift in Sources */,
 				B300A8F629712D0B00D8C4F9 /* ProfileViewModel.swift in Sources */,
+				B35038B9297DFA8A00995AA7 /* RaceListView.swift in Sources */,
 				B333877E296D0A8B0096C683 /* PreviewProvider.swift in Sources */,
 				B3338759296B5B2F0096C683 /* HomeView.swift in Sources */,
 				B3ADD42E2975B0F400DB146C /* DewormerModel.swift in Sources */,
+				B35038B3297CC16600995AA7 /* CirclePetTypeItem.swift in Sources */,
 				B3E0CC72296A61AF0078C647 /* ButtonPrimaryStyle.swift in Sources */,
 				B3338779296CC2F80096C683 /* SearchBarView.swift in Sources */,
 				B3DFE0672978E8DE0094D1FA /* ProfileDelegate.swift in Sources */,
 				B300A8E72970A5D800D8C4F9 /* CustomTabBarView.swift in Sources */,
+				B39C4B7B297F1A0600F03F0B /* GlobalDelegate.swift in Sources */,
 				B3BF3CF2296F1A2F008C003F /* EmailView.swift in Sources */,
 				B3E0CC6F296A60260078C647 /* Color.swift in Sources */,
 				B333878E296E07200096C683 /* SpinnerModifier.swift in Sources */,
+				B35038B1297CAF9700995AA7 /* AddPetView.swift in Sources */,
+				B35038B7297CD5EE00995AA7 /* PetProfileView.swift in Sources */,
 				B300A8FD2971329400D8C4F9 /* CustomAlert.swift in Sources */,
 				B3338775296CA7B00096C683 /* CircleButtonView.swift in Sources */,
 				B3DFE06C2978FF030094D1FA /* PetsView.swift in Sources */,
@@ -705,12 +755,14 @@
 				B3338788296DEFE60096C683 /* OTPViewModel.swift in Sources */,
 				B385864D297769E90086A5DD /* Date.swift in Sources */,
 				B3AC82172976610B0082E4AE /* HospitalizationModel.swift in Sources */,
+				B3FF55BD297F53C800B1E271 /* PetDetailView.swift in Sources */,
 				B3338790296E33A90096C683 /* BannerModifier.swift in Sources */,
 				B3AC821B2976799E0082E4AE /* String.swift in Sources */,
 				B3030BD6297250CF007F2017 /* ListTextFieldItemView.swift in Sources */,
 				B333870F296A79AC0096C683 /* HalfSheet.swift in Sources */,
 				B300A8FB2971325800D8C4F9 /* AlertType.swift in Sources */,
 				B300A8F32971253700D8C4F9 /* ListItemView.swift in Sources */,
+				B36F1789297C7460003B0FF2 /* CustomCarousel.swift in Sources */,
 				B3338761296B6BC60096C683 /* UserModel.swift in Sources */,
 				B3AC8219297662480082E4AE /* MedicalAppointmentModel.swift in Sources */,
 				B3CD769C296A590E0027119E /* AnimalProApp.swift in Sources */,

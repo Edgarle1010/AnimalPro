@@ -7,6 +7,8 @@
 
 import SwiftUI
 import CoreData
+import URLImage
+import URLImageStore
 
 extension PreviewProvider {
     static var dev: DeveloperPreview {
@@ -19,6 +21,8 @@ class DeveloperPreview {
     private init() { }
     
     let authVM = AuthViewModel()
+    let urlImageService = URLImageService(fileStore: URLImageFileStore(),
+                                              inMemoryStore: URLImageInMemoryStore())
     
     @StateObject var notifierVM: NotificationService = {
         let vm = NotificationService()
@@ -38,15 +42,31 @@ class DeveloperPreview {
         vm.banners = [
             .init(
                 id: "1",
-                imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-2x1-gatos.jpg?alt=media&token=156dd004-4fb6-4e53-b675-ed2364a60d33",
+                imageUrl: "https://animalpro-storage-cfa8f616163310-staging.s3.amazonaws.com/images/banners/banner-food-10.jpg",
                 action: .shop),
-            .init(id: "2", imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-food-10.jpg?alt=media&token=11f6ab26-ccbc-4a3f-8651-bf0bdd214c05", action: .shop)]
+            .init(
+                id: "2",
+                imageUrl: "https://animalpro-storage-cfa8f616163310-staging.s3.amazonaws.com/images/banners/banner-2x1-gatos.jpg",
+                action: .shop)]
+        vm.pets = [.init(id: "1", petType: .dog, biologicalSex: .male, names: "Paco", imageUrl: "https://images.alphacoders.com/247/thumb-1920-247333.jpg"),
+                   .init(id: "2", petType: .cat, biologicalSex: .female, names: "Michi", imageUrl: "https://c4.wallpaperflare.com/wallpaper/348/422/333/cat-4k-hd-wallpaper-preview.jpg"),
+                   .init(id: "3", petType: .dog, biologicalSex: .male, names: "Paco", imageUrl: "https://images.alphacoders.com/247/thumb-1920-247333.jpg"),
+                   .init(id: "4", petType: .cat, biologicalSex: .female, names: "Michi", imageUrl: "https://c4.wallpaperflare.com/wallpaper/348/422/333/cat-4k-hd-wallpaper-preview.jpg")]
+        vm.currentPet = .init(id: UUID().uuidString, petType: .dog, names: "")
         return vm
     }()
     
-    @State var banners: [BannerModel] = [
-        .init(id: "1",
-              imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-2x1-gatos.jpg?alt=media&token=156dd004-4fb6-4e53-b675-ed2364a60d33",
-              action: .shop),
-        .init(id: "2", imageUrl: "https://firebasestorage.googleapis.com/v0/b/animalpro-d745f.appspot.com/o/images%2Fbanners%2Fbanner-food-10.jpg?alt=media&token=11f6ab26-ccbc-4a3f-8651-bf0bdd214c05", action: .shop)]
+    @StateObject var petsVM1: PetsViewModel = {
+        let vm = PetsViewModel()
+        vm.banners = [
+            .init(
+                id: "1",
+                imageUrl: "https://animalpro-storage-cfa8f616163310-staging.s3.amazonaws.com/images/banners/banner-food-10.jpg",
+                action: .shop),
+            .init(
+                id: "2",
+                imageUrl: "https://animalpro-storage-cfa8f616163310-staging.s3.amazonaws.com/images/banners/banner-2x1-gatos.jpg",
+                action: .shop)]
+        return vm
+    }()
 }

@@ -21,7 +21,6 @@ struct MedicalRecordModel: Codable {
     let definitiveDiagnosis: [String]
     let temporaryOwner: TemporaryOwnerModel
     let progressSheets: [ProgressSheetsModel]
-    let hospitalizations: [HospitalizationModel]
     
     enum PhysicalExamType: String, Codable {
         case heartRate, breathingRate, temperature, swallowingReflex, coughReflex,

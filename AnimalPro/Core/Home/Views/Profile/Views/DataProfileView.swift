@@ -113,9 +113,7 @@ extension DataProfileView: ProfileDelegate {
                         .font(.footnote.bold())
                         .foregroundColor(.theme.tertiary)
                 }
-
             }
-
         } //:HSTACK
         .padding(.horizontal, 20)
     }

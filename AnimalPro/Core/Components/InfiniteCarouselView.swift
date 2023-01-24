@@ -39,11 +39,11 @@ struct InfiniteCarouselView: View {
                         if fakeIndex == genericBanners.count - 1 && (offset > -2 && offset < 2) {
                             fakeIndex = 1
                         }
-                        print(offset)
                     }
                     .tag(getIndex(banner: banner))
             }
         }
+        .frame(width: UIScreen.main.bounds.width, height: 280)
         .highPriorityGesture(
             DragGesture()
                 .onChanged({ _ in
@@ -61,8 +61,6 @@ struct InfiniteCarouselView: View {
             .vAling(.bottom)
             .padding(.bottom, 20)
         }
-        .edgesIgnoringSafeArea(.top)
-        .frame(width: UIScreen.main.bounds.width, height: 230)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .animation(.easeInOut, value: currentIndex)
         .onAppear {
@@ -146,7 +144,6 @@ extension InfiniteCarouselView {
         } content: { image, info in
             image
                 .resizable()
-                .ignoresSafeArea()
         }
     }
 }

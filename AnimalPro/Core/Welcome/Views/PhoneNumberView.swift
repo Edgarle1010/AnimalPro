@@ -58,7 +58,7 @@ struct PhoneNumberView: View {
                 isActive: $showVerificationCodeView,
                 label: { EmptyView() })
             
-            Color.theme.accent.opacity(0.1)
+            Color.theme.accent.opacity(0.1).ignoresSafeArea()
         }
     }
 }

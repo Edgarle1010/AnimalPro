@@ -12,10 +12,8 @@ struct CountryListView: View {
     // MARK: - PROPERTIES
     
     @Environment(\.dismiss) private var dismiss
-    
-    @Binding var countryCode : String
-    @Binding var countryFlag : String
-    
+    @Binding var countryCode: String
+    @Binding var countryFlag: String
     @State private var searchText: String = ""
     @State private var countryDictionary: [String: String]  = [
         "AF":"93","AL":"355","DZ":"213","US":"1",

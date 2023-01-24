@@ -13,6 +13,7 @@ struct ButtonPrimaryStyle: ButtonStyle {
     var cornerRadius: CGFloat = 20
     var hPadding: CGFloat = 50
     var color: Color
+    var image: Image?
     
     // MARK: - BODY
     
@@ -21,7 +22,7 @@ struct ButtonPrimaryStyle: ButtonStyle {
             .frame(minWidth: 0, maxWidth: .infinity)
             .padding()
             .foregroundColor(.white)
-            .background(!configuration.isPressed ? color: color.opacity(0.8))
+            .background(!configuration.isPressed ? color : color.opacity(0.8))
             .cornerRadius(cornerRadius)
             .font(Font.body.bold())
             .padding(.horizontal, hPadding)

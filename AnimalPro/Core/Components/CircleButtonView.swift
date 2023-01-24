@@ -13,17 +13,19 @@ struct CircleButtonView: View {
     // MARK: - PROPERTIES
     
     let iconName: String
+    var foregroundColor: Color = .black
+    var circleForegroundColor: Color = Color(UIColor.systemGray5)
     
     // MARK: - BODY
     
     var body: some View {
         Image(systemName: iconName)
             .font(.headline)
-            .foregroundColor(Color.black)
+            .foregroundColor(foregroundColor)
             .frame(width: 40, height: 40)
             .background(
                 Circle()
-                    .foregroundColor(Color(UIColor.systemGray5))
+                    .foregroundColor(circleForegroundColor)
             )
             .shadow(
                 color: Color.theme.tertiary.opacity(0.25),

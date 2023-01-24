@@ -7,7 +7,5 @@
 
 import Foundation
 
-protocol ProfileDelegate {
-    func onError(_ error: String)
-    func onSuccess(_ message: String)
+protocol ProfileDelegate: GlobalDelegate {
 }
